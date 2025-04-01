@@ -5,11 +5,13 @@ This directory contains projects focused on medical imaging, healthcare, and bio
 ## Projects
 
 ### [fMRI Explorer](./fMRI-Explorer)
-A Python toolkit for loading, preprocessing, and visualizing fMRI data:
-- Motion correction and spatial normalization
-- Brain activation visualization
-- Functional connectivity analysis
-- Statistical analysis
+A comprehensive Python toolkit for analyzing functional Magnetic Resonance Imaging (fMRI) data:
+- Complete preprocessing pipeline with industry-standard tools
+- Multiple visualization techniques for brain activity
+- Region-of-interest (ROI) analysis with anatomical atlases
+- Functional connectivity analysis with correlation matrices
+- Statistical modeling using General Linear Model (GLM)
+- Advanced surface-based visualization
 
 ### [DiffusionLab](./DiffusionLab)
 Implementation of diffusion models for image generation:
