@@ -1,54 +1,46 @@
 # fMRI Explorer
 
-A Python toolkit for loading, preprocessing, and visualizing fMRI data.
+A comprehensive Python toolkit for analyzing functional Magnetic Resonance Imaging (fMRI) data.
 
 ## Overview
-This project demonstrates fundamental neuroimaging techniques using Nilearn and other Python libraries. It includes preprocessing pipelines, visualization techniques, and functional connectivity analysis.
+This project provides a complete pipeline for neuroimaging analysis using industry-standard tools. It implements a systematic workflow from raw data processing to advanced statistical analysis.
 
 ## Features
-- Motion correction and spatial normalization
-- Brain activation visualization
-- Region-of-interest analysis
-- Functional connectivity matrices
-- Basic statistical analysis
+- Data loading and exploration of neuroimaging datasets
+- Comprehensive preprocessing pipeline with Nilearn
+- Multiple visualization techniques for brain activity
+- Region-of-interest (ROI) analysis with anatomical atlases
+- Functional connectivity analysis with correlation matrices
+- Statistical modeling using General Linear Model (GLM)
+- Advanced surface-based visualization
 
 ## Dataset
-This project uses data from the OpenNeuro dataset DS002422, including sample preprocessed fMRI scans.
+This project uses the ADHD-200 dataset, a publicly available collection of resting-state fMRI data from the 1000 Functional Connectomes Project. It also utilizes the standard MNI152 template for anatomical reference.
 
-## Setup
-```bash
-pip install -r requirements.txt
-```
+## Dependencies
+- nibabel - For reading neuroimaging file formats
+- nilearn - Specialized library for neuroimaging analysis
+- matplotlib - For visualization
+- pandas - For data manipulation
+- scikit-learn - For statistical tools and models
 
-## Usage
-```python
-from fmri_explorer import load_data, preprocess, visualize
+## Notebook Contents
+The included Jupyter notebook demonstrates:
 
-# Load sample data
-data = load_data('sample.nii.gz')
+1. **Data Loading**: Import and initial exploration of fMRI data
+2. **Raw Data Visualization**: Basic orthogonal views of the brain
+3. **Preprocessing**: Signal cleaning, normalization, and filtering
+4. **Brain Visualization**: Multiple methods to visualize brain structure and function
+5. **ROI Analysis**: Extraction of time series from anatomical regions
+6. **Functional Connectivity**: Analysis of brain network organization
+7. **Statistical Analysis**: Application of the General Linear Model
+8. **Surface Mapping**: Advanced visualization on cortical surfaces
 
-# Preprocess the data
-preprocessed = preprocess(data, motion_correction=True)
-
-# Create visualization
-visualize.plot_activation_map(preprocessed)
-```
-
-## Project Structure
-```
-fMRI-Explorer/
-├── src/                  # Source code
-│   ├── __init__.py
-│   ├── load_data.py      # Data loading utilities
-│   ├── preprocess.py     # Preprocessing pipeline
-│   └── visualize.py      # Visualization functions
-├── notebooks/            # Jupyter notebooks with examples
-│   ├── 01_data_loading.ipynb
-│   ├── 02_preprocessing.ipynb
-│   └── 03_visualization.ipynb
-└── data/                 # Sample data and data loaders
-    └── README.md         # Information about data sources
-```
+## How to Use
+1. Clone this repository
+2. Install the required dependencies: `pip install -r requirements.txt`
+3. Open the Jupyter notebook: `jupyter notebook fMRI_Explorer.ipynb`
+4. Run the cells to see the complete analysis pipeline
 
 ## Results
-The preprocessing pipeline improves data quality by reducing motion artifacts and normalizing to standard space, enabling more accurate analysis of brain activation patterns.
+The project demonstrates how preprocessing improves data quality by reducing noise and artifacts, allowing for meaningful analysis of brain activation patterns and functional connectivity networks.
