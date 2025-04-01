@@ -42,5 +42,8 @@ The included Jupyter notebook demonstrates:
 3. Open the Jupyter notebook: `jupyter notebook fMRI_Explorer.ipynb`
 4. Run the cells to see the complete analysis pipeline
 
+## Colab Link:
+https://colab.research.google.com/drive/1PiWaW7KFMUK_50U6DYb8qjMio6qfk32S?usp=sharing
+
 ## Results
 The project demonstrates how preprocessing improves data quality by reducing noise and artifacts, allowing for meaningful analysis of brain activation patterns and functional connectivity networks.
