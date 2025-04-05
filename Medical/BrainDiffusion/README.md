@@ -1,103 +1,51 @@
 # BrainDiffusion
 
-A state-of-the-art implementation of 3D diffusion models for brain MRI generation using PyTorch and TorchIO.
+A state-of-the-art implementation of 3D diffusion models for brain MRI generation.
 
 ## Overview
-BrainDiffusion implements cutting-edge diffusion probabilistic models specifically for volumetric brain imaging data. The project demonstrates how to apply denoising diffusion models to 3D MRI volumes, enabling the generation of high-quality synthetic brain scans with applications in medical imaging research, data augmentation, and brain decoding.
+This project implements cutting-edge diffusion probabilistic models specifically for 3D brain imaging data. It demonstrates how modern generative AI techniques can be applied to neuroimaging to create realistic brain MRI volumes and potentially be extended to functional MRI (fMRI) analysis.
 
 ## Features
-- Complete 3D diffusion model implementation for volumetric brain data
-- Memory-efficient 3D U-Net architecture with gradient checkpointing
+- Full 3D diffusion model implementation for volumetric brain data
+- Memory-efficient architecture with gradient checkpointing
 - Patch-based training for handling large 3D volumes
-- Optimized 3D attention mechanisms
-- Interactive 3D visualization using Plotly
-- Support for brain region conditioning
-- DDIM sampling for faster generation
-- Comprehensive evaluation metrics for 3D volumes
+- Brain region conditioning capabilities
+- Interactive 3D visualization of brain volumes
+- Efficient sampling using DDIM for faster inference
+- Quantitative evaluation metrics for generated volumes
 
 ## Dataset
-This project uses the IXI (Information eXtraction from Images) dataset, containing 582 T1-weighted brain MRI scans in NIfTI (.nii.gz) format. The dataset provides high-quality 3D brain volumes for training and evaluating diffusion models.
+This project uses the IXI Dataset (Information eXtraction from Images), specifically the T1-weighted MRI scans of 582 subjects in .nii.gz format. The IXI dataset is a collection of nearly 600 MR images from normal, healthy subjects that provides a valuable resource for developing and testing medical imaging algorithms.
 
-## Setup
-```bash
-# Install required dependencies
-pip install -r requirements.txt
+## Dependencies
+- PyTorch - Deep learning framework
+- TorchIO - Specialized library for medical imaging in PyTorch
+- Plotly - For interactive 3D visualization
+- nibabel - For reading neuroimaging file formats
+- einops - For tensor manipulation
 
-# For Google Colab, mount your drive with the IXI dataset
-from google.colab import drive
-drive.mount('/content/drive')
-```
+## Notebook Contents
+The included Jupyter notebook demonstrates:
 
-## Usage
-```python
-# Train the diffusion model
-python src/train.py --data_dir /path/to/IXI-T1 --batch_size 2 --epochs 100
+1. **Environment Setup**: Configuration and library installation
+2. **Data Loading**: Importing and exploration of IXI brain MRI data with TorchIO
+3. **Preprocessing Pipeline**: Normalization and preparation of 3D volumes
+4. **3D Visualization**: Interactive exploration of brain volumes using Plotly
+5. **Diffusion Model Implementation**: Complete implementation of 3D diffusion model components
+6. **U-Net Architecture**: Memory-efficient 3D U-Net with attention mechanisms
+7. **Training Process**: Patch-based training with optimization techniques
+8. **Sampling and Generation**: DDIM sampling for efficient brain volume generation
+9. **Visualization of Results**: Comparison between real and generated brain volumes
+10. **Evaluation**: Quantitative assessment of generation quality
 
-# Generate brain volumes
-python src/generate.py --model_path checkpoints/best_model.pt --num_samples 5
+## How to Use
+1. Clone this repository
+2. Install the required dependencies: `pip install -r requirements.txt`
+3. Open the Jupyter notebook: `jupyter notebook BrainDiffusion.ipynb` or use the Colab link
+4. Run the cells to see the complete implementation
 
-# Interactive visualization
-python src/visualize.py --volume_path generated/sample_001.nii.gz
-```
+## Colab Link
+https://colab.research.google.com/drive/1IlneCfzyJeozj1bEplJT9AH1subhMAUp?usp=sharing
 
-## Project Structure
-```
-BrainDiffusion/
-├── src/                      # Source code
-│   ├── __init__.py
-│   ├── diffusion.py          # Core diffusion model implementation
-│   ├── unet3d.py             # 3D U-Net architecture
-│   ├── dataset.py            # TorchIO dataset and loaders
-│   ├── train.py              # Training script
-│   ├── generate.py           # Generation script
-│   ├── visualize.py          # 3D visualization utilities
-│   └── evaluate.py           # Evaluation metrics
-├── notebooks/                # Jupyter notebooks with examples
-│   ├── 01_dataset_exploration.ipynb
-│   ├── 02_diffusion_training.ipynb
-│   ├── 03_3d_visualization.ipynb
-│   └── 04_brain_generation.ipynb
-└── examples/                 # Example outputs and visualizations
-    ├── real_vs_generated.png
-    ├── diffusion_process.png
-    └── brain_regions.png
-```
-
-## 3D Visualization
-BrainDiffusion includes interactive 3D visualization tools using Plotly that allow for:
-- Volumetric rendering of brain MRI scans
-- Interactive exploration of generated brain volumes
-- Visualization of the diffusion process from noise to brain
-- Comparative visualization of real vs. generated samples
-
-## Applications to Neuroimaging
-- Data augmentation for medical imaging models
-- Anonymized synthetic dataset generation
-- Brain decoding and cognitive state modeling
-- Anomaly detection in neuroimaging
-- Conditional generation of specific brain structures
-
-## Colab Notebook
-[Open in Google Colab](https://colab.research.google.com/drive/your-notebook-link-here)
-
-## Memory Optimization Techniques
-BrainDiffusion implements several memory optimization techniques essential for working with 3D volumes:
-- Patch-based sampling with TorchIO
-- Gradient checkpointing in ResNet blocks
-- Mixed precision training
-- Memory-efficient attention mechanisms
-- DDIM sampling for faster inference
-
-## Implementation Highlights
-- Attention mechanisms adapted for 3D data
-- FiLM conditioning for brain region control
-- Custom 3D positional embeddings
-- Classifier-free guidance for controlled generation
-- Comprehensive brain-specific evaluation metrics
-
-## Future Work
-- Extension to 4D spatiotemporal fMRI data
-- Integration of anatomical priors for improved generation
-- Multi-modal brain imaging synthesis
-- Fine-grained control of generated brain regions
-- Application to pathological brain condition modeling
+## Results
+The project demonstrates the ability to generate realistic 3D brain volumes using diffusion models. The implementation includes memory optimization techniques critical for working with volumetric data, providing a foundation for applications in data augmentation, anomaly detection, and potentially extending to full 4D spatiotemporal fMRI data.
