@@ -1,0 +1,11 @@
+# Core dependencies
+torch>=1.10.0
+torchvision>=0.11.0
+monai>=0.8.0
+nibabel>=3.2.0
+numpy>=1.20.0
+matplotlib>=3.4.0
+scikit-image>=0.18.0
+tqdm>=4.62.0
+ipython>=7.30.0
+scikit-learn>=1.0.0
