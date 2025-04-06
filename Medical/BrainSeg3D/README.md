@@ -18,7 +18,7 @@ This project uses a subset of the BraTS (Brain Tumor Segmentation Challenge) dat
 ## Google Colab Implementation
 The complete implementation is available as a Google Colab notebook:
 
-[BrainSeg3D Colab Notebook](https://colab.research.google.com/drive/your-notebook-link-here)
+[BrainSeg3D Colab Notebook](https://colab.research.google.com/drive/13rQii6yytiY6dZ6VMWCnEtiso0hkTuXb?usp=sharing)
 
 ## Project Structure
 ```
