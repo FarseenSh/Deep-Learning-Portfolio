@@ -12,14 +12,4 @@ Projects focused on medical imaging, signal processing, and healthcare applicati
 - **[BrainSeg3D](./Medical/BrainSeg3D)**: 3D U-Net implementation for brain segmentation
 - **[ModalMerge](./Medical/ModalMerge)**: Cross-modal conditioning techniques
 
-### [Finance](./Finance)
-*Coming soon*
 
-### [NLP](./NLP)
-*Coming soon*
-
-### [Vision](./Vision)
-*Coming soon*
-
-## Setup
-Each project contains its own requirements.txt file with project-specific dependencies.
