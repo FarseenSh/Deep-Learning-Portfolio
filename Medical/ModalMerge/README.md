@@ -1,96 +1,149 @@
-# ModalMerge
+# ModalMerge: Cross-Modal Learning Framework
 
-A framework for multi-modal learning and conditioning techniques with applications in medical imaging.
+A PyTorch-based framework for multi-modal learning that enables conditioning one data modality on another through cross-attention mechanisms. This project focuses on medical imaging applications, particularly for fMRI data analysis.
 
-## Overview
-This project explores methods for conditioning one data modality on another through cross-attention mechanisms. While demonstrated with various data types, the techniques are particularly relevant for integrating different forms of medical imaging and clinical data.
+## Project Overview
 
-## Features
-- Cross-attention mechanisms for multi-modal learning
-- Conditioning frameworks for various data types
-- Integration of image, time-series, and structured data
-- Visualization of cross-modal relationships
-- Applications in medical data integration
+ModalMerge addresses the challenge of relating different data modalities in a principled way. By leveraging cross-attention mechanisms, the framework allows information from one modality (e.g., structural brain images) to guide the generation or analysis of another modality (e.g., functional brain activity).
 
-## Setup
-```bash
-pip install -r requirements.txt
-```
+This approach has significant applications in medical imaging, particularly neuroimaging, where multiple complementary modalities are often available (structural MRI, functional MRI, EEG, clinical data, etc.).
 
-## Usage
+## Technical Approach
+
+### Architecture
+
+The framework employs a modular architecture consisting of:
+
+1. **Encoders**: Modality-specific encoders that extract features from different data types:
+   - Image encoders using CNN backbones (ResNet)
+   - Time series encoders using LSTM or Transformer architectures
+   - Text encoders with embedding layers and RNNs
+   - Tabular data encoders with fully-connected networks
+
+2. **Cross-Attention Module**: The core component that enables conditioning between modalities:
+   - Multi-head attention mechanism
+   - Ability to focus on relevant parts of the conditioning modality
+   - Visualization of attention patterns
+
+3. **Decoders**: Modality-specific decoders that generate data from attended embeddings:
+   - Image decoders using transposed convolutions
+   - Time series decoders using LSTM or Transformer architectures
+   - Text decoders with language modeling capabilities
+   - Tabular data decoders with fully-connected networks
+
+### Key Features
+
+- **Multi-Modal Support**: Works with images, time series, text, and tabular data
+- **Flexible Conditioning**: Any supported modality can condition any other modality
+- **Medical Imaging Focus**: Specific adaptations for medical imaging data
+- **Attention Visualization**: Tools to understand cross-modal relationships
+- **Modular Design**: Easily extendable to new modalities and architectures
+
+## Applications
+
+The framework demonstrates several applications:
+
+### 1. Image to Time Series
+
+Converting visual information to temporal patterns - useful for:
+- Predicting temporal dynamics from static images
+- Generating physiological signals from medical scans
+- Forecasting time-evolving properties based on initial conditions
+
+### 2. Time Series to Image
+
+Generating visual representations from temporal data - useful for:
+- Visualizing patterns in complex time series data
+- Creating visual summaries of temporal information
+- Mapping functional data to anatomical structures
+
+### 3. Brain Structure to Function Mapping
+
+A specialized medical application demonstrating:
+- Mapping structural brain imaging to functional activity
+- Predicting fMRI signals from anatomical MRI
+- Region-of-interest (ROI) based functional analysis
+
+## Datasets
+
+The framework can work with various datasets, including:
+
+### Medical Imaging Datasets
+
+- **Brain Imaging Datasets**:
+  - Human Connectome Project (HCP)
+  - OpenNeuro datasets
+  - Brain Tumor Segmentation (BraTS) dataset
+  - Alzheimer's Disease Neuroimaging Initiative (ADNI)
+
+- **fMRI-Specific Datasets**:
+  - Task-based fMRI datasets
+  - Resting-state fMRI collections
+  - Multi-site datasets for robustness testing
+
+### Synthetic Data Generation
+
+For development and testing, the framework includes utilities to generate:
+- Synthetic brain-like images with controllable features
+- Simulated fMRI time series with realistic properties
+- Paired data with known relationships between modalities
+
+## Implementation Details
+
+- **Framework**: PyTorch
+- **Core Models**: ResNet, LSTM, Transformer
+- **Attention Mechanism**: Multi-head attention with customized cross-modal operations
+- **Visualization**: Matplotlib-based tools for attention and generation visualization
+- **Training**: Modality-specific loss functions with early stopping
+
+## Future Work
+
+### Planned Extensions
+
+1. **Advanced Conditioning Methods**:
+   - FiLM (Feature-wise Linear Modulation)
+   - AdaIN (Adaptive Instance Normalization)
+   - Diffusion model conditioning
+
+2. **Additional Modalities**:
+   - 3D volumetric data processing
+   - Point cloud representations
+   - Graph-structured data
+
+### fMRI-Specific Improvements
+
+1. Integration with standard neuroimaging preprocessing pipelines
+2. Support for 4D data (3D volumes over time)
+3. Brain parcellation techniques for ROI-based analysis
+4. Incorporation of functional connectivity metrics
+5. Spatiotemporal attention mechanisms specific to brain data
+
+## Usage Examples
+
+The detailed implementation is provided in the Jupyter notebook. To use the framework:
+
 ```python
-from modalmerge import MultiModalModel, DataLoader
-
-# Load sample multi-modal data
-image_data, time_series_data, labels = DataLoader.load_sample_data()
-
-# Create a model that conditions time-series generation on images
+# Create a model for mapping brain structure to function
 model = MultiModalModel(
-    condition_type='image',
-    target_type='time_series',
-    condition_encoder='resnet18',
-    target_decoder='transformer'
+    condition_type='image',  # Structural MRI
+    target_type='time_series',  # fMRI time series
+    condition_encoder='resnet50',
+    target_decoder='transformer',
+    embedding_dim=512,
+    num_attention_heads=16
 )
 
 # Train the model
-model.train(
-    condition_data=image_data,
-    target_data=time_series_data,
-    epochs=50
-)
+trainer = Trainer(model)
+trainer.train(train_loader, val_loader, epochs=30)
 
-# Generate time-series from a new image
-new_time_series = model.generate(new_image)
+# Generate functional data from structural image
+fmri_prediction = model(structural_mri)
 
-# Visualize the attention between modalities
-model.visualize_cross_attention(new_image, new_time_series)
+# Visualize attention patterns
+Visualizer.plot_attention(model, structural_mri)
 ```
 
-## Project Structure
-```
-ModalMerge/
-├── src/                      # Source code
-│   ├── __init__.py
-│   ├── model.py              # Multi-modal model implementation
-│   ├── attention.py          # Cross-attention mechanisms
-│   ├── encoders.py           # Various encoders for different modalities
-│   ├── decoders.py           # Various decoders for different modalities
-│   └── visualize.py          # Visualization utilities
-└── notebooks/                # Jupyter notebooks with examples
-    ├── 01_image_to_text.ipynb
-    ├── 02_text_to_image.ipynb
-    ├── 03_image_to_timeseries.ipynb
-    └── 04_multimodal_medical.ipynb
-```
+---
 
-## Cross-Modal Attention
-The cross-attention mechanism allows the model to focus on relevant parts of the conditioning modality:
-
-[Cross-attention visualization would be here]
-
-## Supported Modality Pairs
-The project demonstrates conditioning between various modality pairs:
-
-| Condition Modality | Target Modality   | Use Case Example               |
-|--------------------|-------------------|--------------------------------|
-| Image              | Text              | Medical image captioning       |
-| Text               | Image             | Text-guided image generation   |
-| Image              | Time-series       | Predicting signals from scans  |
-| Time-series        | Image             | Visualizing signal patterns    |
-| Structured data    | Image             | Clinical data to imaging       |
-
-## Applications to Medical Imaging
-This project has direct applications to multi-modal medical data analysis:
-
-- Conditioning image generation on clinical parameters
-- Integrating structural and functional imaging data
-- Combining imaging with genetic or demographic information
-- Cross-modal retrieval in medical databases
-
-## Connection to fMRI Analysis
-The multi-modal techniques explored here are particularly relevant for fMRI research:
-
-- Integrating anatomical MRI with functional data
-- Conditioning brain activity patterns on experimental stimuli
-- Combining fMRI with other clinical measurements
-- Generating synthetic fMRI data based on structural imaging
+This project demonstrates advanced techniques for multi-modal learning with specific applications to medical imaging and fMRI analysis, relevant to the Emory-BMI-GSoC project "Advancing Brain Decoding and Cognitive Analysis: Leveraging Diffusion Models for Spatiotemporal Pattern Recognition in fMRI Data."
