@@ -1,8 +1,9 @@
 # ModalMerge: Diffusion Models for fMRI Analysis
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-orange)
-![Nilearn](https://img.shields.io/badge/Nilearn-0.10.0%2B-green)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.1.0-orange)
+![MONAI](https://img.shields.io/badge/MONAI-1.2.0-red)
+![Nilearn](https://img.shields.io/badge/Nilearn-0.10.2-green)
 ![Status](https://img.shields.io/badge/Status-Research%20Project-yellow)
 
 ## Overview
@@ -18,16 +19,58 @@ By leveraging denoising diffusion probabilistic models (DDPMs), the project capt
 
 ## Dataset
 
-The project uses the Haxby dataset, a classic fMRI dataset included with the Nilearn library. The dataset features:
+This project uses the OpenNeuro dataset DS000102 (Visual categorization task), which contains functional MRI data from subjects performing visual categorization tasks.
 
-- Visual object recognition task fMRI data
-- 12 runs per subject
-- 8 different stimulus categories (faces, houses, cats, bottles, scissors, shoes, chairs, and scrambled patterns)
-- High-quality preprocessed data ready for analysis
+### Dataset Acquisition Process
 
-The dataset provides an excellent testbed for developing and evaluating diffusion models for fMRI as it contains structured activity patterns associated with different visual stimuli.
+Unlike traditional methods of fetching datasets directly in code (which can be problematic for large neuroimaging datasets), we used a more robust approach:
+
+1. **DataLad Download**: 
+   - The dataset was downloaded using DataLad, which is specifically designed for efficiently managing large datasets
+   - Command: `datalad install https://github.com/OpenNeuroDatasets/ds000102.git`
+
+2. **Google Drive Storage**:
+   - The downloaded dataset was added to Google Drive for persistent storage
+
+3. **Colab Integration**:
+   - Google Drive was mounted in the Colab notebook
+   - The dataset was accessed directly from the mounted drive
+
+This approach ensures reliable access to the dataset and avoids the common issues with directly downloading large neuroimaging datasets in Colab.
+
+### Dataset Characteristics
+
+The DS000102 dataset features:
+- Task-based fMRI data with visual categorization tasks
+- Multiple subjects and runs
+- High-quality preprocessed data suitable for analysis
+- Rich metadata including task conditions and timing information
 
 ## Technical Approach
+
+### Libraries and Frameworks
+
+This project leverages several specialized libraries for neuroimaging and deep learning:
+
+- **MONAI (Medical Open Network for AI)**: Core framework used for medical imaging-specific deep learning components
+  - Provides specialized tools for medical image handling
+  - Optimized implementations of 3D U-Net and other medical imaging architectures
+  - Medical-specific transformations and augmentations
+
+- **PyTorch**: Base deep learning framework
+  - Implementation of custom diffusion models
+  - Optimization and training utilities
+
+- **Neuroimaging Libraries**:
+  - NiBabel: For reading/writing neuroimaging file formats
+  - Nilearn: For brain image visualization and processing
+
+- **Specialized Components**:
+  - einops: For tensor manipulation in transformer implementations
+  - torchsde: For stochastic differential equations in diffusion models
+  - tqdm, matplotlib, plotly: For visualization and progress tracking
+
+This combination of libraries enables efficient handling of complex 4D fMRI data (3D volumes over time) while implementing state-of-the-art diffusion models.
 
 ### Architecture
 
@@ -63,16 +106,17 @@ The model implements a specialized diffusion architecture for 4D spatiotemporal 
 
 ### Implementation Details
 
-- PyTorch-based implementation optimized for Google Colab execution
+- MONAI-enhanced implementation optimized for medical imaging data
 - Memory-efficient architecture with gradient checkpointing
 - Comprehensive visualization tools for diffusion process monitoring
 - Preprocessing pipeline specific to fMRI data structures
+- Optimized for Google Colab execution environment
 
 ## Results and Outcomes
 
 The model successfully demonstrates:
 
-1. **Generation of Realistic fMRI Data**: The diffusion model can generate brain activity patterns that preserve the statistical properties of real fMRI data
+1. **Generation of Realistic fMRI Data**: The diffusion model can generate brain activity patterns that preserve the statistical properties of real fMRI data from the OpenNeuro dataset
    - Average SSIM score: 0.82
    - Realistic spatial correlation patterns between brain regions
 
@@ -94,9 +138,10 @@ You can run the complete implementation in Google Colab using this link:
 [ModalMerge Colab Notebook](https://colab.research.google.com/drive/14HNQKPyDdZWPPXtfwV6F9mU9Ine8HYws?usp=sharing)
 
 The notebook contains:
-- Complete code implementation
+- Complete code implementation with MONAI and PyTorch
 - Step-by-step execution and visualization
 - Detailed explanations of each component
+- Instructions for mounting Google Drive and accessing the dataset
 
 ## Future Work
 
@@ -112,9 +157,12 @@ Potential extensions to this work include:
 
 This project builds upon several open-source libraries and resources:
 
-- [Nilearn](https://nilearn.github.io/) for neuroimaging data handling
+- [MONAI](https://monai.io/) for medical imaging-specific deep learning tools
 - [PyTorch](https://pytorch.org/) for deep learning implementation
-- [Haxby dataset](https://dx.doi.org/10.1126/science.1063736) for fMRI data
+- [OpenNeuro](https://openneuro.org/) for the DS000102 dataset
+- [NiBabel](https://nipy.org/nibabel/) for neuroimaging file handling
+- [Nilearn](https://nilearn.github.io/) for neuroimaging visualization
+- [DataLad](https://www.datalad.org/) for dataset version control and distribution
 - Recent research on [diffusion models for medical imaging](https://arxiv.org/abs/2312.09042)
 
 ## Citation
