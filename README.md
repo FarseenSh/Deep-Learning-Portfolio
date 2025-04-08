@@ -7,9 +7,19 @@ A collection of deep learning projects across different domains demonstrating va
 ### [Medical](./Medical)
 Projects focused on medical imaging, signal processing, and healthcare applications:
 - **[fMRI Explorer](./Medical/fMRI-Explorer)**: Neuroimaging data preprocessing and visualization 
-- **[BrainDiffusion](./Medical/BrainDiffusion)**: 3D diffusion models for brain MRI generation
-- **[TimeTrans](./Medical/TimeTrans)**: Time-series analysis using transformer architectures
+- **[DiffusionLab](./Medical/DiffusionLab)**: Implementation of diffusion models for image generation
+- **[TimeTrans](./Medical/TimeTrans)**: Transformer architecture for fMRI temporal pattern analysis
 - **[BrainSeg3D](./Medical/BrainSeg3D)**: 3D U-Net implementation for brain segmentation
-- **[ModalMerge](./Medical/ModalMerge)**: Cross-modal conditioning techniques
+- **[ModalMerge](./Medical/ModalMerge)**: Diffusion models for fMRI analysis
 
+### [Finance](./Finance)
+*Coming soon*
 
+### [NLP](./NLP)
+*Coming soon*
+
+### [Vision](./Vision)
+*Coming soon*
+
+## Setup
+Each project contains its own requirements.txt file with project-specific dependencies.
