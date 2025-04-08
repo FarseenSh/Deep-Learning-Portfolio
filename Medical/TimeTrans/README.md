@@ -22,19 +22,19 @@ This project uses the Localizer fMRI dataset, available through the Nilearn libr
 
 - Task-based fMRI data with multiple cognitive conditions
 - TR (repetition time) of 2.4 seconds
-- Various task types including calculation, sentence reading, and button presses
-- Multiple subjects with whole-brain functional images
+- Various task conditions including calculation, sentences, button presses, and more
+- Whole-brain functional images with 3D volumes over time
 
 ### Preprocessing Pipeline
 
 The raw fMRI data undergoes several preprocessing steps:
-1. **Brain masking** to focus analysis on brain voxels only
-2. **Standardization** to normalize signal intensity
+1. **Brain masking** using a focused mask based on signal intensity
+2. **Standardization** (Z-scoring) to normalize signal intensity across voxels
 3. **Detrending** to remove linear signal drifts
-4. **Frequency filtering** (0.01-0.1 Hz) to focus on task-relevant frequencies
-5. **Dimensionality reduction** via PCA to make training computationally feasible
+4. **Frequency filtering** with high-pass (0.01 Hz) and low-pass (0.1 Hz) to focus on task-relevant frequencies
+5. **Dimensionality reduction** via PCA to 50 components, preserving most of the variance while making training computationally feasible
 
-Each timepoint (TR) is labeled according to the cognitive task being performed, creating a sequence labeling problem where the model must learn to recognize temporal patterns associated with different cognitive states.
+Each timepoint (TR) is labeled according to the cognitive task being performed at that time. To create meaningful sequences for temporal analysis, a sliding window approach with a window size of 10-15 TRs is used, allowing the model to learn patterns across time.
 
 ## Technical Approach
 
@@ -48,23 +48,27 @@ TimeTrans implements a specialized transformer architecture for fMRI time series
 #### Core Components
 
 1. **Input Projection**
-   - Linear projection from PCA components to model dimension
+   - Linear projection from PCA components (50) to model dimension (64)
    - Adapts the reduced fMRI features to the transformer's working dimension
 
 2. **Positional Encoding**
    - Both fixed sinusoidal and learnable implementations
+   - Fixed encoding uses sine/cosine functions at different frequencies
+   - Learnable encoding uses parameters initialized with Kaiming normal distribution
    - Encodes the temporal position of each TR in the sequence
    - Critical for the model to understand temporal ordering
 
 3. **Transformer Encoder Layers**
-   - Multi-head self-attention to capture relationships between timepoints
-   - Layer normalization for training stability
-   - Feedforward networks with ReLU activation
+   - Multi-head self-attention (4 heads) to capture relationships between timepoints
+   - Layer normalization applied before attention for training stability
+   - Feedforward networks with dimension 128 and ReLU activation
+   - Dropout of 0.2 for regularization
    - Residual connections to prevent gradient degradation
 
 4. **Classification Head**
    - Global average pooling across time dimension
-   - MLP for final classification of cognitive states
+   - Two-layer MLP (64→32→num_classes) for final classification of cognitive states
+   - Dropout of 0.2 between layers
 </details>
 
 ### Self-Attention for Temporal Dynamics
@@ -85,11 +89,19 @@ The project includes an LSTM baseline for comparison, which represents the tradi
 - More interpretable attention patterns
 - No recurrent state bottleneck
 
+### Training Process
+
+- Batch size of 32 (or smaller based on dataset size)
+- Adam optimizer with learning rate 0.001
+- Cross-entropy loss for multi-class classification
+- 20 training epochs
+- Train/validation/test split with stratified sampling to maintain class distribution
+
 ## Results and Visualizations
 
 The model successfully decodes cognitive states from fMRI temporal patterns:
 
-- Classification accuracy exceeds traditional approaches
+- Classification accuracy of approximately 70-80% (significantly above chance level)
 - Attention patterns reveal which timepoints are most informative for different cognitive tasks
 - Visualization tools provide insight into how the model makes decisions
 
@@ -97,10 +109,11 @@ The model successfully decodes cognitive states from fMRI temporal patterns:
 
 TimeTrans includes comprehensive tools for visualizing attention patterns:
 
-- Heatmaps showing relationships between timepoints
-- Temporal attention profiles highlighting key moments in the fMRI sequence
-- Comparison between correctly and incorrectly classified samples
-- Identification of high-attention regions that drive classification decisions
+- **Attention Heatmaps**: Displaying the full attention matrix between all timepoints
+- **Temporal Profiles**: Average attention weights across time to identify key moments
+- **Comparative Analysis**: Side-by-side visualization of input signals and attention patterns
+- **Peak Detection**: Automatic identification of high-attention regions, including statistical thresholding (mean + std)
+- **Classification Insights**: Comparison between correctly and incorrectly classified samples to understand model behavior
 
 These visualizations not only help understand model behavior but also provide neuroscientific insights about which moments in brain activity are most distinctive for different cognitive processes.
 
@@ -113,15 +126,6 @@ These visualizations not only help understand model behavior but also provide ne
 - **NumPy/Pandas**: Data processing and manipulation
 - **Matplotlib/Seaborn**: Visualization
 - **Scikit-learn**: Data preprocessing and evaluation metrics
-
-### Training Process
-
-- Dimensionality reduction via PCA
-- Sequence creation with sliding windows
-- Stratified train/validation/test splitting
-- Cross-entropy loss optimization
-- Adam optimizer with learning rate 0.001
-- 20 training epochs
 
 ## Usage Examples
 
@@ -155,6 +159,21 @@ outputs, attn_weights = model(sample)
 # Visualize attention
 visualize_attention(transformer, X_test_seq, y_test_seq, sample_idx, class_name)
 ```
+
+## Code Organization
+
+The project is organized into several logical blocks:
+
+1. **Setup and Imports**: Installation of dependencies and basic configuration
+2. **Data Loading**: Downloading and loading the Localizer dataset
+3. **Data Exploration**: Visualization and analysis of fMRI data and task events
+4. **Preprocessing**: Brain masking, standardization, PCA, and sequence creation
+5. **Positional Encoding**: Implementation of fixed and learnable position embeddings
+6. **Transformer Implementation**: Core self-attention and encoder layer modules
+7. **Full Model**: Complete TimeTrans architecture with classification head
+8. **LSTM Baseline**: Alternative LSTM implementation for comparison
+9. **Training**: Data preparation, training loop, and evaluation
+10. **Visualization**: Attention visualization and result interpretation
 
 ## Future Work
 
